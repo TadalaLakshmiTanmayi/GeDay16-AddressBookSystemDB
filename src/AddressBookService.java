@@ -31,7 +31,7 @@ public class AddressBookService {
             while (true) {
                 System.out.println("\nMenu:");
                 System.out.println("1. View Contacts");
-                System.out.println("2. Add New Contact");
+                System.out.println("2. Insert New Contact");
                 System.out.println("3. Exit");
                 System.out.print("Choose an option: ");
 
