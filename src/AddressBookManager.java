@@ -186,4 +186,25 @@ public class AddressBookManager {
             System.err.println("Error updating contact: " + e.getMessage());
         }
     }
+    // Method to delete a contact
+    public void deleteContact(Statement statement, Scanner scanner) {
+        System.out.print("Enter the first name of the contact to delete: ");
+        String firstName = scanner.nextLine();
+        System.out.print("Enter the last name of the contact to delete: ");
+        String lastName = scanner.nextLine();
+
+        String deleteSQL = "DELETE FROM contacts WHERE first_name = ? AND last_name = ?";
+        try (PreparedStatement preparedStatement = statement.getConnection().prepareStatement(deleteSQL)) {
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Contact deleted successfully!");
+            } else {
+                System.out.println("Contact not found!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting contact: " + e.getMessage());
+        }
+    }
 }

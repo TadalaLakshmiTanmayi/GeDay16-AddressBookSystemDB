@@ -33,7 +33,8 @@ public class AddressBookService {
                 System.out.println("1. View Contacts");
                 System.out.println("2. Add New Contact");
                 System.out.println("3. Edit Contact");
-                System.out.println("4. Exit");
+                System.out.println("4. Delete Contact");
+                System.out.println("5. Exit");
                 System.out.print("Choose an option: ");
 
                 int choice = scanner.nextInt();
@@ -50,6 +51,9 @@ public class AddressBookService {
                         manager.editContact(statement, scanner);
                         break;
                     case 4:
+                        manager.deleteContact(statement, scanner);
+                        break;
+                    case 5:
                         System.out.println("Thank you!");
                         return;
                     default:
