@@ -18,9 +18,14 @@ public class AddressBookService {
             // Create table if it doesn't exist
             String createTableSQL = "CREATE TABLE IF NOT EXISTS contacts ("
                     + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                    + "name VARCHAR(100) NOT NULL,"
-                    + "email VARCHAR(100),"
-                    + "phone VARCHAR(15));";
+                    + "first_name VARCHAR(100) NOT NULL,"
+                    + "last_name VARCHAR(100) NOT NULL,"
+                    + "address VARCHAR(255),"
+                    + "city VARCHAR(100),"
+                    + "state VARCHAR(100),"
+                    + "zip VARCHAR(20),"
+                    + "phone_number VARCHAR(15),"
+                    + "email VARCHAR(100));";
             statement.execute(createTableSQL);
 
             while (true) {
@@ -41,7 +46,7 @@ public class AddressBookService {
                         manager.addContact(statement, scanner);
                         break;
                     case 3:
-                        System.out.println("Thank you");
+                        System.out.println("Thankyou");
                         return;
                     default:
                         System.out.println("Invalid choice. Please try again.");
