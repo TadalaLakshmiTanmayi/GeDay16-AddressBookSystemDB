@@ -263,4 +263,45 @@ public class AddressBookManager {
             System.err.println("Error retrieving contacts: " + e.getMessage());
         }
     }
+    // Method to get the count of contacts based on city or state
+    public void getContactCountByCityOrState(Statement statement, Scanner scanner) {
+        System.out.println("Get count of contacts by:");
+        System.out.println("1. City");
+        System.out.println("2. State");
+        System.out.print("Choose an option: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        String countSQL = null;
+        String searchValue = null;
+
+        switch (choice) {
+            case 1:
+                System.out.print("Enter the city: ");
+                searchValue = scanner.nextLine();
+                countSQL = "SELECT COUNT(*) FROM contacts WHERE city = ?";
+                break;
+            case 2:
+                System.out.print("Enter the state: ");
+                searchValue = scanner.nextLine();
+                countSQL = "SELECT COUNT(*) FROM contacts WHERE state = ?";
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                return;
+        }
+
+        try (PreparedStatement preparedStatement = statement.getConnection().prepareStatement(countSQL)) {
+            preparedStatement.setString(1, searchValue);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);  // Get the count from the result set
+                System.out.println("Number of contacts in the " + (choice == 1 ? "city" : "state") + " '" + searchValue + "': " + count);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error retrieving contact count: " + e.getMessage());
+        }
+    }
 }
