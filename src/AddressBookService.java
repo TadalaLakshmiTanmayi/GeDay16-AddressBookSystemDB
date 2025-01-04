@@ -34,11 +34,12 @@ public class AddressBookService {
                 System.out.println("2. Add New Contact");
                 System.out.println("3. Edit Contact");
                 System.out.println("4. Delete Contact");
-                System.out.println("5. Exit");
+                System.out.println("5. Retrieve Contacts by City or State");
+                System.out.println("6. Exit");
                 System.out.print("Choose an option: ");
 
                 int choice = scanner.nextInt();
-                scanner.nextLine();  // Consume newline
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1:
@@ -54,6 +55,9 @@ public class AddressBookService {
                         manager.deleteContact(statement, scanner);
                         break;
                     case 5:
+                        manager.retrieveContactsByCityOrState(statement, scanner);
+                        break;
+                    case 6:
                         System.out.println("Thank you!");
                         return;
                     default:

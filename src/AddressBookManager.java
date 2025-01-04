@@ -207,4 +207,60 @@ public class AddressBookManager {
             System.err.println("Error deleting contact: " + e.getMessage());
         }
     }
+    // Method to retrieve contacts based on city or state
+    public void retrieveContactsByCityOrState(Statement statement, Scanner scanner) {
+        System.out.println("Search by:");
+        System.out.println("1. City");
+        System.out.println("2. State");
+        System.out.print("Choose an option: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
+
+        String searchSQL = null;
+        String searchValue = null;
+
+        switch (choice) {
+            case 1:
+                System.out.print("Enter the city: ");
+                searchValue = scanner.nextLine();
+                searchSQL = "SELECT * FROM contacts WHERE city = ?";
+                break;
+            case 2:
+                System.out.print("Enter the state: ");
+                searchValue = scanner.nextLine();
+                searchSQL = "SELECT * FROM contacts WHERE state = ?";
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                return;
+        }
+
+        try (PreparedStatement preparedStatement = statement.getConnection().prepareStatement(searchSQL)) {
+            preparedStatement.setString(1, searchValue);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            boolean found = false;
+            System.out.println("Contacts found:");
+            while (resultSet.next()) {
+                found = true;
+                System.out.printf("ID: %d, First Name: %s, Last Name: %s, Address: %s, City: %s, State: %s, Zip: %s, Phone: %s, Email: %s%n",
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("address"),
+                        resultSet.getString("city"),
+                        resultSet.getString("state"),
+                        resultSet.getString("zip"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("email"));
+            }
+
+            if (!found) {
+                System.out.println("No contacts found for the given city or state.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error retrieving contacts: " + e.getMessage());
+        }
+    }
 }
