@@ -31,12 +31,13 @@ public class AddressBookService {
             while (true) {
                 System.out.println("\nMenu:");
                 System.out.println("1. View Contacts");
-                System.out.println("2. Insert New Contact");
-                System.out.println("3. Exit");
+                System.out.println("2. Add New Contact");
+                System.out.println("3. Edit Contact");
+                System.out.println("4. Exit");
                 System.out.print("Choose an option: ");
 
                 int choice = scanner.nextInt();
-                scanner.nextLine();
+                scanner.nextLine();  // Consume newline
 
                 switch (choice) {
                     case 1:
@@ -46,7 +47,10 @@ public class AddressBookService {
                         manager.addContact(statement, scanner);
                         break;
                     case 3:
-                        System.out.println("Thankyou");
+                        manager.editContact(statement, scanner);
+                        break;
+                    case 4:
+                        System.out.println("Thank you!");
                         return;
                     default:
                         System.out.println("Invalid choice. Please try again.");

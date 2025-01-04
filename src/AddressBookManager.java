@@ -61,4 +61,129 @@ public class AddressBookManager {
             System.err.println("Error fetching contacts: " + e.getMessage());
         }
     }
+
+    // Method to edit an existing contact
+    public void editContact(Statement statement, Scanner scanner) {
+        System.out.print("Enter the first name of the contact to edit: ");
+        String firstName = scanner.nextLine();
+        System.out.print("Enter the last name of the contact to edit: ");
+        String lastName = scanner.nextLine();
+
+        // Check if the contact exists
+        String selectSQL = "SELECT * FROM contacts WHERE first_name = ? AND last_name = ?";
+        try (PreparedStatement preparedStatement = statement.getConnection().prepareStatement(selectSQL)) {
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // If the contact exists, display current details
+                System.out.println("Found contact:");
+                System.out.printf("ID: %d, First Name: %s, Last Name: %s, Address: %s, City: %s, State: %s, Zip: %s, Phone: %s, Email: %s%n",
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("address"),
+                        resultSet.getString("city"),
+                        resultSet.getString("state"),
+                        resultSet.getString("zip"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("email"));
+
+                // Ask the user what they want to update
+                System.out.println("Which detail would you like to update?");
+                System.out.println("1. Address");
+                System.out.println("2. City");
+                System.out.println("3. State");
+                System.out.println("4. Zip Code");
+                System.out.println("5. Phone Number");
+                System.out.println("6. Email");
+                System.out.print("Choose an option: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                String updateSQL = null;
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter new address: ");
+                        String address = scanner.nextLine();
+                        updateSQL = "UPDATE contacts SET address = ? WHERE first_name = ? AND last_name = ?";
+                        try (PreparedStatement updateStatement = statement.getConnection().prepareStatement(updateSQL)) {
+                            updateStatement.setString(1, address);
+                            updateStatement.setString(2, firstName);
+                            updateStatement.setString(3, lastName);
+                            updateStatement.executeUpdate();
+                            System.out.println("Address updated successfully!");
+                        }
+                        break;
+                    case 2:
+                        System.out.print("Enter new city: ");
+                        String city = scanner.nextLine();
+                        updateSQL = "UPDATE contacts SET city = ? WHERE first_name = ? AND last_name = ?";
+                        try (PreparedStatement updateStatement = statement.getConnection().prepareStatement(updateSQL)) {
+                            updateStatement.setString(1, city);
+                            updateStatement.setString(2, firstName);
+                            updateStatement.setString(3, lastName);
+                            updateStatement.executeUpdate();
+                            System.out.println("City updated successfully!");
+                        }
+                        break;
+                    case 3:
+                        System.out.print("Enter new state: ");
+                        String state = scanner.nextLine();
+                        updateSQL = "UPDATE contacts SET state = ? WHERE first_name = ? AND last_name = ?";
+                        try (PreparedStatement updateStatement = statement.getConnection().prepareStatement(updateSQL)) {
+                            updateStatement.setString(1, state);
+                            updateStatement.setString(2, firstName);
+                            updateStatement.setString(3, lastName);
+                            updateStatement.executeUpdate();
+                            System.out.println("State updated successfully!");
+                        }
+                        break;
+                    case 4:
+                        System.out.print("Enter new zip code: ");
+                        String zip = scanner.nextLine();
+                        updateSQL = "UPDATE contacts SET zip = ? WHERE first_name = ? AND last_name = ?";
+                        try (PreparedStatement updateStatement = statement.getConnection().prepareStatement(updateSQL)) {
+                            updateStatement.setString(1, zip);
+                            updateStatement.setString(2, firstName);
+                            updateStatement.setString(3, lastName);
+                            updateStatement.executeUpdate();
+                            System.out.println("Zip code updated successfully!");
+                        }
+                        break;
+                    case 5:
+                        System.out.print("Enter new phone number: ");
+                        String phoneNumber = scanner.nextLine();
+                        updateSQL = "UPDATE contacts SET phone_number = ? WHERE first_name = ? AND last_name = ?";
+                        try (PreparedStatement updateStatement = statement.getConnection().prepareStatement(updateSQL)) {
+                            updateStatement.setString(1, phoneNumber);
+                            updateStatement.setString(2, firstName);
+                            updateStatement.setString(3, lastName);
+                            updateStatement.executeUpdate();
+                            System.out.println("Phone number updated successfully!");
+                        }
+                        break;
+                    case 6:
+                        System.out.print("Enter new email: ");
+                        String email = scanner.nextLine();
+                        updateSQL = "UPDATE contacts SET email = ? WHERE first_name = ? AND last_name = ?";
+                        try (PreparedStatement updateStatement = statement.getConnection().prepareStatement(updateSQL)) {
+                            updateStatement.setString(1, email);
+                            updateStatement.setString(2, firstName);
+                            updateStatement.setString(3, lastName);
+                            updateStatement.executeUpdate();
+                            System.out.println("Email updated successfully!");
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } else {
+                System.out.println("Contact not found!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating contact: " + e.getMessage());
+        }
+    }
 }
