@@ -304,4 +304,35 @@ public class AddressBookManager {
             System.err.println("Error retrieving contact count: " + e.getMessage());
         }
     }
+    // Method to retrieve and display contacts sorted alphabetically by first name and last name for a given city
+    public void retrieveSortedContactsByCity(Statement statement, Scanner scanner) {
+        System.out.print("Enter the city: ");
+        String city = scanner.nextLine();
+
+        // SQL query to select contacts from a specific city, sorted by first name and last name
+        String selectSQL = "SELECT * FROM contacts WHERE city = ? ORDER BY first_name, last_name;";
+
+        try (PreparedStatement preparedStatement = statement.getConnection().prepareStatement(selectSQL)) {
+            preparedStatement.setString(1, city);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            System.out.println("\nContacts in city '" + city + "' sorted by name:");
+
+            // Display the results
+            while (resultSet.next()) {
+                System.out.printf("ID: %d, First Name: %s, Last Name: %s, Address: %s, City: %s, State: %s, Zip: %s, Phone: %s, Email: %s%n",
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("address"),
+                        resultSet.getString("city"),
+                        resultSet.getString("state"),
+                        resultSet.getString("zip"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("email"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving sorted contacts: " + e.getMessage());
+        }
+    }
 }
